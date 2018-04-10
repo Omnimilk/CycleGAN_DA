@@ -1,10 +1,10 @@
 # CycleGAN_DA
-Using CycleGAN to do domain adaptation between simulation and real world.
+Using CycleGAN to do domain adaptation between simulation and real world. Network architecture code is based on  thie repo: https://github.com/vanhuyz/CycleGAN-TensorFlow.
 
 ## Usage: 
         1) build data: python build_data.py --X_input_dir "sim_images" --X_output_file "sim_images_a1_low_var.tfrecords"
-        2)run the network: python train_CycleGAN.py --X "tfrecordsname"
-        3)open tensorboard: tensorboard --logdir checkpoints/${datetime}
+        2) run the network: python train_CycleGAN.py --X "tfrecordsname"
+        3) open tensorboard: tensorboard --logdir checkpoints/${datetime}
 
 
 ## Structure:
