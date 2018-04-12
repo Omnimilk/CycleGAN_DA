@@ -5,6 +5,7 @@ from random import shuffle
 import glob
 import os
 import csv
+import cv2
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 feature_key_path = "Data/features_060.csv"
 # data_folder = "Data/tfdata"
@@ -138,7 +139,7 @@ def main():
     features = tf.parse_single_example(serialized_example, features=features_dict)
     processed_images = []
     for key in features_dict:
-        print(key)
+        print(key)#dictionary keys are in the same order as they were constructed? Yes
         image_buffer = features[key]
         image = tf.image.decode_jpeg(image_buffer, channels=3)
         image = tf.image.convert_image_dtype(image, dtype=tf.uint8)
@@ -169,18 +170,21 @@ def main():
 
         #for multiple features images
         fig = plt.figure()
-        for img_idx in range(10):
-            img= sess.run(images[img_idx])
-            # print(img.shape)
-            img = img[0]
-            img = img.astype(np.uint8)       
-            ax = fig.add_subplot(3, 4, img_idx + 1)
-            plt.xticks([])
-            plt.yticks([])
-            plt.imshow(img)
-        #plt.xkcd(scale=1, length=100, randomness=2)
-        plt.tight_layout()
-        plt.show()
+        num_batches = 100
+        for i in range(num_batches):
+            for img_idx in range(10):
+                img= sess.run(images[img_idx])
+                # print(img.shape)
+                img = img[0]
+                img = img.astype(np.uint8)   
+                cv2.imwrite("mini_trainingset/{0:0>6}.jpeg".format(i*10 + img_idx),img)    
+            #     ax = fig.add_subplot(3, 4, img_idx + 1)
+            #     plt.xticks([])
+            #     plt.yticks([])
+            #     plt.imshow(img)
+            # #plt.xkcd(scale=1, length=100, randomness=2)
+            # plt.tight_layout()
+            # plt.show()
         coord.request_stop()
         coord.join(threads)
         

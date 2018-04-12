@@ -10,24 +10,26 @@ import tensorflow as tf
 import os
 from model_CycleGAN import CycleGAN
 import utils_CycleGAN as utils
+import numpy as np
+
 
 FLAGS = tf.flags.FLAGS
 
 tf.flags.DEFINE_string('model', '', 'model path (.pb)')
 tf.flags.DEFINE_string('input', 'input_sample.jpg', 'input image path (.jpg)')
 tf.flags.DEFINE_string('output', 'output_sample.jpg', 'output image path (.jpg)')
-tf.flags.DEFINE_integer('image_size', '256', 'image size, default: 256')
+# tf.flags.DEFINE_integer('image_size', '256', 'image size, default: 256')
 
 def inference():
   graph = tf.Graph()
-
+  image_size=np.array([160,200])
   with graph.as_default():
     with tf.gfile.FastGFile(FLAGS.input, 'rb') as f:
       image_data = f.read()
       input_image = tf.image.decode_jpeg(image_data, channels=3)
-      input_image = tf.image.resize_images(input_image, size=(FLAGS.image_size, FLAGS.image_size))
+      input_image = tf.image.resize_images(input_image, size=(image_size[0], image_size[1]))
       input_image = utils.convert2float(input_image)
-      input_image.set_shape([FLAGS.image_size, FLAGS.image_size, 3])
+      input_image.set_shape([image_size[0], image_size[1], 3])
 
     with tf.gfile.FastGFile(FLAGS.model, 'rb') as model_file:
       graph_def = tf.GraphDef()

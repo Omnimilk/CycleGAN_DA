@@ -58,9 +58,12 @@ def train():
     cycle_gan = CycleGAN(
         X_train_file=FLAGS.X,
         #Y_train_file=FLAGS.Y,
-        Y_train_file= target_path,
+        # Y_train_file= target_path,
+         Y_train_file = "mini_real.tfrecords",
         batch_size=FLAGS.batch_size,
-        image_size=np.array([128,160]),
+        # image_size=np.array([128,160]),
+        #image_size=np.array([192,240]),#too large
+        image_size=np.array([160,200]),
         use_lsgan=FLAGS.use_lsgan,
         norm=FLAGS.norm,
         lambda1=FLAGS.lambda1,
