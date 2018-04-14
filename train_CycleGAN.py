@@ -48,9 +48,9 @@ def train():
 
   # data_folder = "Data/tfdata"
   # file_tail = "22"
-  data_folder = "Data/tfdata1"
-  file_tail = "34"
-  target_path = get_data_paths(data_folder,file_tail)
+  # data_folder = "Data/tfdata1"
+#   file_tail = "34"
+#   target_path = get_data_paths(data_folder,file_tail)
   # print(target_path)
 
   graph = tf.Graph()
