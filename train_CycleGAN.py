@@ -63,7 +63,7 @@ def train():
         batch_size=FLAGS.batch_size,
         # image_size=np.array([128,160]),
         #image_size=np.array([192,240]),#too large
-        image_size=np.array([160,200]),
+        image_size=np.array([512,640]),
         use_lsgan=FLAGS.use_lsgan,
         norm=FLAGS.norm,
         lambda1=FLAGS.lambda1,

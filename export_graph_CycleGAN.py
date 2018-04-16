@@ -27,7 +27,7 @@ tf.flags.DEFINE_string('norm', 'instance',
 
 def export_graph(model_name, XtoY=True):
   graph = tf.Graph()
-  image_size=np.array([160,200])
+  image_size=np.array([512,640])
   with graph.as_default():
     cycle_gan = CycleGAN(ngf=FLAGS.ngf, norm=FLAGS.norm, image_size=image_size)
 
@@ -44,8 +44,8 @@ def export_graph(model_name, XtoY=True):
 
   with tf.Session(graph=graph) as sess:
     sess.run(tf.global_variables_initializer())
-    #latest_ckpt = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
-    latest_ckpt =  tf.saved_model.loader.load(sess, ["model.ckpt-20000.meta"], FLAGS.checkpoint_dir)
+    latest_ckpt = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
+    #latest_ckpt =  "checkpoints/20180414-1318/model.ckpt-180000"
     restore_saver.restore(sess, latest_ckpt)
     output_graph_def = tf.graph_util.convert_variables_to_constants(
         sess, graph.as_graph_def(), [output_image.op.name])
