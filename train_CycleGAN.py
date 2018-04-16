@@ -3,6 +3,7 @@ from model_CycleGAN import CycleGAN
 from datetime import datetime
 import os
 import logging
+import utils_CycleGAN as utils
 from utils_CycleGAN import ImagePool
 from utils import get_data_paths
 import numpy as np
