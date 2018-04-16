@@ -1,5 +1,6 @@
 import tensorflow as tf
 import random
+import json
 
 def convert2int(image):
   """ Transfrom from float tensor ([-1.,1.]) to int image ([0,255])
@@ -29,6 +30,12 @@ def batch_convert2float(images):
     4D float tensor
   """
   return tf.map_fn(convert2float, images, dtype=tf.float32)
+
+def readJson(fileName):
+      
+  with open(fileName) as data_file:
+      data = json.load(data_file)
+  return data
 
 class ImagePool:
   """ History of generated images
