@@ -54,6 +54,11 @@ def train():
   # print(target_path)
 
   graph = tf.Graph()
+  config_file = "config.json"
+  config_data = utils.readJson(config_file)
+  image_size_dict = config_data["image_size"]
+  image_size = np.array([image_size_dict["height"],image_size_dict["width"]])
+
   with graph.as_default():
     cycle_gan = CycleGAN(
         X_train_file=FLAGS.X,
@@ -61,9 +66,7 @@ def train():
         # Y_train_file= target_path,
          Y_train_file = "mini_real.tfrecords",
         batch_size=FLAGS.batch_size,
-        # image_size=np.array([128,160]),
-        #image_size=np.array([192,240]),#too large
-        image_size=np.array([512,640]),
+        image_size=image_size,
         use_lsgan=FLAGS.use_lsgan,
         norm=FLAGS.norm,
         lambda1=FLAGS.lambda1,

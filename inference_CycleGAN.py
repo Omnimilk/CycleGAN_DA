@@ -22,7 +22,10 @@ tf.flags.DEFINE_string('output', 'output_sample.jpg', 'output image path (.jpg)'
 
 def inference():
   graph = tf.Graph()
-  image_size=np.array([160,200])
+  config_file = "config.json"
+  config_data = utils.readJson(config_file)
+  image_size_dict = config_data["image_size"]
+  image_size = np.array([image_size_dict["height"],image_size_dict["width"]])
   with graph.as_default():
     with tf.gfile.FastGFile(FLAGS.input, 'rb') as f:
       image_data = f.read()

@@ -27,7 +27,10 @@ tf.flags.DEFINE_string('norm', 'instance',
 
 def export_graph(model_name, XtoY=True):
   graph = tf.Graph()
-  image_size=np.array([512,640])
+  config_file = "config.json"
+  config_data = utils.readJson(config_file)
+  image_size_dict = config_data["image_size"]
+  image_size = np.array([image_size_dict["height"],image_size_dict["width"]])
   with graph.as_default():
     cycle_gan = CycleGAN(ngf=FLAGS.ngf, norm=FLAGS.norm, image_size=image_size)
 
