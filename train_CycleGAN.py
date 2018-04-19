@@ -8,6 +8,8 @@ from utils_CycleGAN import ImagePool
 from utils import get_data_paths
 import numpy as np
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+config = tf.ConfigProto(allow_soft_placement=True)
+config.gpu_options.allow_growth = True
 
 FLAGS = tf.flags.FLAGS
 
@@ -85,7 +87,7 @@ def train():
     train_writer = tf.summary.FileWriter(checkpoints_dir, graph)
     saver = tf.train.Saver()
 
-  with tf.Session(graph=graph) as sess:
+  with tf.Session(graph=graph,config=config) as sess:
     if FLAGS.load_model is not None:#load existing model
       checkpoint = tf.train.get_checkpoint_state(checkpoints_dir)
       meta_graph_path = checkpoint.model_checkpoint_path + ".meta"
