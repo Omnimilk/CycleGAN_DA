@@ -37,6 +37,32 @@ def readJson(fileName):
       data = json.load(data_file)
   return data
 
+def image_augmentation(image):
+  """Performs data augmentation by randomly permuting the inputs.
+  Args:
+    image: A float `Tensor` of size [height, width, channels] with values
+      in range[0,1].
+  Returns:
+    The mutated batch of images
+  """
+  # Apply photometric data augmentation (contrast etc.)
+  num_channels = image.shape_as_list()[-1]
+  if num_channels == 4:
+    # Only augment image part
+    image, depth = image[:, :, 0:3], image[:, :, 3:4]
+  elif num_channels == 1:
+    image = tf.image.grayscale_to_rgb(image)
+  image = tf.image.random_brightness(image, max_delta=0.1)
+  image = tf.image.random_saturation(image, lower=0.5, upper=1.5)
+  image = tf.image.random_hue(image, max_delta=0.032)
+  image = tf.image.random_contrast(image, lower=0.5, upper=1.5)
+  image = tf.clip_by_value(image, 0, 1.0)
+  if num_channels == 4:
+    image = tf.concat(2, [image, depth])
+  elif num_channels == 1:
+    image = tf.image.rgb_to_grayscale(image)
+  return image
+
 class ImagePool:
   """ History of generated images
       Same logic as https://github.com/junyanz/CycleGAN/blob/master/util/image_pool.lua

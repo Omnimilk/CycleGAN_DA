@@ -7,7 +7,7 @@ import utils_CycleGAN as utils
 from utils_CycleGAN import ImagePool
 from utils import get_data_paths
 import numpy as np
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 FLAGS = tf.flags.FLAGS
 
