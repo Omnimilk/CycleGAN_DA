@@ -46,7 +46,7 @@ def image_augmentation(image):
     The mutated batch of images
   """
   # Apply photometric data augmentation (contrast etc.)
-  num_channels = image.shape_as_list()[-1]
+  num_channels = image.get_shape().as_list()[-1]
   if num_channels == 4:
     # Only augment image part
     image, depth = image[:, :, 0:3], image[:, :, 3:4]
