@@ -52,10 +52,10 @@ def image_augmentation(image):
     image, depth = image[:, :, 0:3], image[:, :, 3:4]
   elif num_channels == 1:
     image = tf.image.grayscale_to_rgb(image)
-  image = tf.image.random_brightness(image, max_delta=0.1)
-  image = tf.image.random_saturation(image, lower=0.5, upper=1.5)
+  image = tf.image.random_brightness(image, max_delta=0.01)
+  image = tf.image.random_saturation(image, lower=0.8, upper=1.2)
   image = tf.image.random_hue(image, max_delta=0.032)
-  image = tf.image.random_contrast(image, lower=0.5, upper=1.5)
+  image = tf.image.random_contrast(image, lower=0.8, upper=1.2)
   image = tf.clip_by_value(image, 0, 1.0)
   if num_channels == 4:
     image = tf.concat(2, [image, depth])
