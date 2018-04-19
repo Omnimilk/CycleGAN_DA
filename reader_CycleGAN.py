@@ -50,9 +50,10 @@ class Reader():
 
   def _preprocess(self, image):
     # image = tf.random_crop(image,[448,560,3])#add random crop
-    image = utils.convert2float(image)
+    
     #image = utils.image_augmentation(image)
     image = tf.image.resize_images(image, size=self.image_size)
+    image = utils.convert2float(image)
     #print("self image size: {}".format(self.image_size))
     image.set_shape([self.image_size[0], self.image_size[1], 3])
     return image
