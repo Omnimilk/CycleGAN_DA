@@ -117,9 +117,9 @@ def train():
                              cycle_gan.fake_x: fake_X_pool.query(fake_x_val)}
               )
         )
-
-        train_writer.add_summary(summary, step)
-        train_writer.flush()
+        if step % 100 == 0:
+          train_writer.add_summary(summary, step)
+          train_writer.flush()
 
         if step % 100 == 0:
           logging.info('-----------Step %d:-------------' % step)
