@@ -7,7 +7,7 @@ import utils_CycleGAN as utils
 from utils_CycleGAN import ImagePool
 from utils import get_data_paths
 import numpy as np
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 config = tf.ConfigProto(allow_soft_placement=True)
 config.gpu_options.allow_growth = True
 

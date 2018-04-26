@@ -6,12 +6,14 @@ import glob
 import os
 import csv
 import cv2
+from pprint import pprint
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 feature_key_path = "Data/features_060.csv"
-# data_folder = "Data/tfdata"
-# file_tail = "22"
-data_folder = "Data/tfdata1"
-file_tail = "34"
+# feature_key_path = "/Users/bozai/Desktop/PixelDA/PixelDA/features_060.csv"
+data_folder = "/Users/bozai/Desktop/PixelDA/PixelDA/Data/tfdata"
+file_tail = "22"
+# data_folder = "Data/tfdata1"
+# file_tail = "34"
 
 def read_feature_names(csv_path):
     """
@@ -177,6 +179,7 @@ def main():
                 # print(img.shape)
                 img = img[0]
                 img = img.astype(np.uint8)   
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 cv2.imwrite("mini_trainingset/{0:0>6}.jpeg".format(i*10 + img_idx),img)    
             #     ax = fig.add_subplot(3, 4, img_idx + 1)
             #     plt.xticks([])
