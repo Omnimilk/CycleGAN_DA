@@ -14,30 +14,17 @@ config.gpu_options.allow_growth = True
 FLAGS = tf.flags.FLAGS
 
 tf.flags.DEFINE_integer('batch_size', 1, 'batch size, default: 1')
-tf.flags.DEFINE_bool('use_lsgan', True,
-                     'use lsgan (mean squared error) or cross entropy loss, default: True')
-tf.flags.DEFINE_string('norm', 'instance',
-                       '[instance, batch] use instance norm or batch norm, default: instance')
-tf.flags.DEFINE_integer('lambda1', 10,
-                        'weight for forward cycle loss (X->Y->X), default: 10')
-tf.flags.DEFINE_integer('lambda2', 10,
-                        'weight for backward cycle loss (Y->X->Y), default: 10')
-tf.flags.DEFINE_float('learning_rate', 2e-4,
-                      'initial learning rate for Adam, default: 0.0002')#2e-4
-tf.flags.DEFINE_float('beta1', 0.5,
-                      'momentum term of Adam, default: 0.5')
-tf.flags.DEFINE_float('pool_size', 50,
-                      'size of image buffer that stores previously generated images, default: 50')
-tf.flags.DEFINE_integer('ngf', 64,
-                        'number of gen filters in first conv layer, default: 64')
-
-tf.flags.DEFINE_string('X', '',
-                       'X tfrecords file for training')
-# tf.flags.DEFINE_string('Y', '',
-#                        'Y tfrecords file for training')
-tf.flags.DEFINE_string('load_model', None,
-                        'folder of saved model that you wish to continue training (e.g. 20170602-1936), default: None')
-
+tf.flags.DEFINE_bool('use_lsgan', True,'use lsgan (mean squared error) or cross entropy loss, default: True')
+tf.flags.DEFINE_string('norm', 'instance', '[instance, batch] use instance norm or batch norm, default: instance')
+tf.flags.DEFINE_integer('lambda1', 10, 'weight for forward cycle loss (X->Y->X), default: 10')
+tf.flags.DEFINE_integer('lambda2', 10, 'weight for backward cycle loss (Y->X->Y), default: 10')
+tf.flags.DEFINE_float('learning_rate', 2e-4, 'initial learning rate for Adam, default: 0.0002')#2e-4
+tf.flags.DEFINE_float('beta1', 0.5, 'momentum term of Adam, default: 0.5')
+tf.flags.DEFINE_float('pool_size', 50, 'size of image buffer that stores previously generated images, default: 50')
+tf.flags.DEFINE_integer('ngf', 64, 'number of gen filters in first conv layer, default: 64')
+tf.flags.DEFINE_string('X', '', 'X tfrecords file for training')
+# tf.flags.DEFINE_string('Y', '', 'Y tfrecords file for training')
+tf.flags.DEFINE_string('load_model', None, 'folder of saved model that you wish to continue training (e.g. 20170602-1936), default: None')
 
 def train():
   if FLAGS.load_model is not None:
@@ -69,7 +56,7 @@ def train():
         #Y_train_file=FLAGS.Y,
         # Y_train_file= target_path,
         #  Y_train_file = "mini_real.tfrecords",
-        Y_train_file = "real_5000.tfrecords",
+        Y_train_file = "real_22_1006.tfrecords",
         batch_size=FLAGS.batch_size,
         image_size=image_size,
         use_lsgan=FLAGS.use_lsgan,
@@ -97,7 +84,7 @@ def train():
     else:#run a new one
       sess.run(tf.global_variables_initializer())
       step = 0
-
+      
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
@@ -117,6 +104,8 @@ def train():
                              cycle_gan.fake_x: fake_X_pool.query(fake_x_val)}
               )
         )
+        # train_writer.add_summary(summary, step)
+        # train_writer.flush()
         if step % 100 == 0:
           train_writer.add_summary(summary, step)
           train_writer.flush()
