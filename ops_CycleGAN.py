@@ -17,12 +17,10 @@ def c7s1_k(input, k, reuse=False, norm='instance', activation='relu', is_trainin
     4D tensor
   """
   with tf.variable_scope(name, reuse=reuse):
-    weights = _weights("weights",
-      shape=[7, 7, input.get_shape()[3], k])
+    weights = _weights("weights", shape=[7, 7, input.get_shape()[3], k])
 
     padded = tf.pad(input, [[0,0],[3,3],[3,3],[0,0]], 'REFLECT')
-    conv = tf.nn.conv2d(padded, weights,
-        strides=[1, 1, 1, 1], padding='VALID')
+    conv = tf.nn.conv2d(padded, weights, strides=[1, 1, 1, 1], padding='VALID')
 
     normalized = _norm(conv, is_training, norm)
 
@@ -185,8 +183,7 @@ def _weights(name, shape, mean=0.0, stddev=0.02):
   """
   var = tf.get_variable(
     name, shape,
-    initializer=tf.random_normal_initializer(
-      mean=mean, stddev=stddev, dtype=tf.float32))
+    initializer=tf.random_normal_initializer(mean=mean, stddev=stddev, dtype=tf.float32))
   return var
 
 def _biases(name, shape, constant=0.0):
