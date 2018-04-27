@@ -59,10 +59,12 @@ class CycleGAN:
     self.D_X = Discriminator('D_X',
         self.is_training, norm=norm, use_sigmoid=use_sigmoid)
 
-    self.fake_x = tf.placeholder(tf.float32,
-        shape=[batch_size, image_size[0], image_size[1], 3])
-    self.fake_y = tf.placeholder(tf.float32,
-        shape=[batch_size, image_size[0], image_size[1], 3])
+    # self.fake_x = tf.placeholder(tf.float32,
+    #     shape=[batch_size, image_size[0], image_size[1], 3])
+    # self.fake_y = tf.placeholder(tf.float32,
+    #     shape=[batch_size, image_size[0], image_size[1], 3])
+
+    
 
   def model(self):
     X_reader = Reader(self.X_train_file, name='X',image_size=self.image_size, batch_size=self.batch_size)
@@ -70,9 +72,16 @@ class CycleGAN:
     Y_reader = Reader(self.Y_train_file, name='Y',image_size=self.image_size, batch_size=self.batch_size)
     x = X_reader.feed()
     y = Y_reader.feed()
+
+    self.fake_x = tf.placeholder(tf.float32,
+        shape=[self.batch_size, self.image_size[0], self.image_size[1], x.get_shape()[3]])
+    self.fake_y = tf.placeholder(tf.float32,
+        shape=[self.batch_size, self.image_size[0], self.image_size[1], y.get_shape()[3]])
+
     cycle_loss = self.cycle_consistency_loss(self.G, self.F, x, y)
 
     # X -> Y
+    # print("x shape {}".format(x.get_shape()))
     fake_y = self.G(x)
     G_gan_loss = self.generator_loss(self.D_Y, fake_y, use_lsgan=self.use_lsgan)
     G_loss =  G_gan_loss + cycle_loss
@@ -151,6 +160,7 @@ class CycleGAN:
     if use_lsgan:
       # use mean squared error
       error_real = tf.reduce_mean(tf.squared_difference(D(y), REAL_LABEL))
+      # print("fake_y shape {}".format(fake_y.get_shape()))
       error_fake = tf.reduce_mean(tf.square(D(fake_y)))
     else:
       # use cross entropy
@@ -173,9 +183,12 @@ class CycleGAN:
   def cycle_consistency_loss(self, G, F, x, y):
     """ cycle consistency loss (L1 norm)
     """
+    # print("x shape {}, y shape {}".format(x.get_shape(), y.get_shape))
     mid0 = G(x)
+    # print("G(x) shape: {}".format(mid0.get_shape()))
     forward_loss = tf.reduce_mean(tf.abs(F(mid0)-x))
     mid = F(y)
+    # print("F(y) shape: {}".format(mid.get_shape()))
     backward_loss = tf.reduce_mean(tf.abs(G(mid))-y)
     loss = self.lambda1*forward_loss + self.lambda2*backward_loss
     return loss
