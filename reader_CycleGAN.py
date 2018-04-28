@@ -59,7 +59,7 @@ class Reader():
     # image.set_shape([self.image_size[0], self.image_size[1], 3])
 
     #1 channel
-    image = tf.image.rgb_to_grayscale(image)
+    # image = tf.image.rgb_to_grayscale(image)
     image.set_shape([self.image_size[0], self.image_size[1], 1])
     return image
 
