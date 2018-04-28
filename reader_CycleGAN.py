@@ -56,11 +56,11 @@ class Reader():
     image = utils.convert2float(image)
     # image = utils.image_augmentation(image)
     #3 channels
-    # image.set_shape([self.image_size[0], self.image_size[1], 3])
+    image.set_shape([self.image_size[0], self.image_size[1], 3])
 
     #1 channel
     # image = tf.image.rgb_to_grayscale(image)
-    image.set_shape([self.image_size[0], self.image_size[1], 1])
+    # image.set_shape([self.image_size[0], self.image_size[1], 1])
     return image
 
 class SplitedReader(Reader):
